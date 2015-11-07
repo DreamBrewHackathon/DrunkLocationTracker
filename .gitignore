@@ -5,6 +5,9 @@ flask/
 venv/
 *~
 
+# config files, just in case
+config.py
+
 # C extensions
 *.so
 

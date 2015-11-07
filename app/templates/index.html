@@ -1,7 +1,7 @@
 <!DOCTYPE HTML>
 <html>
 <head>
-    <title>Flask-SocketIO Test</title>
+    <title>Alfred Tracker</title>
     <script type="text/javascript" src="//code.jquery.com/jquery-1.4.2.min.js"></script>
     <script src="https://maps.googleapis.com/maps/api/js?v=3.exp"></script>
     <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/socket.io/1.3.5/socket.io.min.js"></script>
@@ -40,6 +40,9 @@
 
         // Get random character
         var rand_id = ids[Math.floor(Math.random() * ids.length)];
+
+        // User id based on initials
+        var initials;
 
         // Counter that keeps track of number of times zoomed
         var zoom_counter = 0;
@@ -128,7 +131,7 @@
             });
             markerStore.push(marker);
 
-            if (users[user]["uid"] === rand_id) {
+            if (users[user]["uid"] === initials) {
               map.setCenter(marker.getPosition());
             }
 
@@ -152,7 +155,7 @@
             // event handler for server sent data
             // the data is displayed in the "Received" section of the page
             socket.on('my response', function(msg) {
-                $('#log').append('<br>Received #' + msg.count + ': ' + msg.data);
+                // $('#log').append('<br>Received #' + msg.count + ': ' + msg.data);
             });
 
             // event handler for server sent data for newly updated/added location.
@@ -161,7 +164,12 @@
                 socket.emit("add uid and coords", coords);
 
                 // add the user and coords to local dictionary
-                users[coords.data.uid] = {"uid": coords.data.uid, "lat": coords.data.lat, "lon": coords.data.lon};
+                if (!users.hasOwnProperty(coords.data.uid)) {
+                  $("#log").append("<br>Name: " + coords.data.name + ", Number: " + "<a href='tel:" + coords.data.number + "'>" + coords.data.number + "</a>" + ", Address: " + coords.data.address);
+                }
+
+                users[coords.data.uid] = {"name": coords.data.name, "number": coords.data.number, "address": coords.data.address, "uid": coords.data.uid,
+                "lat": coords.data.lat, "lon": coords.data.lon};
 
                 console.log(users);
 
@@ -210,12 +218,18 @@
             }
           }
 
+          // user id is based on user initials
+          initials = "{{initials}}"
+
           // Broadcast your location
-          socket.emit("map update", {data: {"uid": rand_id, "lat": position.coords.latitude, "lon": position.coords.longitude } });
+          socket.emit("map update", {data: {"name": "{{name}}", "number": "{{number}}", "address": "{{address}}", "uid": initials,
+          "lat": position.coords.latitude, "lon": position.coords.longitude } });
         };
     </script>
 </head>
 <body>
     <div id="map-canvas" style="position:relative;"></div>
+    <h2>Connected people</h2>
+    <div id="log"></div>
 </body>
 </html>
