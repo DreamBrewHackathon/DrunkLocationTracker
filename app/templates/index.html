@@ -1,0 +1,210 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <title>Flask-SocketIO Test</title>
+    <script type="text/javascript" src="//code.jquery.com/jquery-1.4.2.min.js"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?v=3.exp"></script>
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/socket.io/1.3.5/socket.io.min.js"></script>
+    <style>
+      #map-canvas {
+        height: 500px;
+        width: 50%;
+        padding: 0.5%;
+        margin: auto;
+        position: absolute;
+        top: 2%;
+        left: 0;
+        bottom: 0;
+        right: 0;
+      }
+    </style>
+    <script type="text/javascript" charset="utf-8">
+        // GLOBAL VARS //
+
+        // Labels for Map Markers
+        var labels = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+        var labelIndex = 0;
+
+        // Google map object
+        var map = null;
+
+        // Marker store
+        var markerStore = [];
+
+        // Users
+        var users = {};
+
+        // Random id generated when first connecting
+        // List of possible ids
+        var ids = [..."ABCDEFGHIJKLMNOPQRSTUVWXYZ"];
+
+        // Get random character
+        var rand_id = ids[Math.floor(Math.random() * ids.length)];
+
+        // Initialize map
+        function initMap() {
+          var mapOptions = {
+            center: new google.maps.LatLng(0, 0),
+            zoom: 2,
+            mapTypeId: google.maps.MapTypeId.ROADMAP
+          };
+          map = new google.maps.Map(document.getElementById("map-canvas"),
+                                            mapOptions);
+        }
+
+        google.maps.event.addDomListener(window, 'load', initMap);
+
+        // Reset the map
+        function resetMap() {
+          map = null;
+          var mapOptions = {
+            center: new google.maps.LatLng(0, 0),
+            zoom: 2,
+            mapTypeId: google.maps.MapTypeId.ROADMAP
+          };
+          map = new google.maps.Map(document.getElementById("map-canvas"), mapOptions);
+          google.maps.event.addDomListener(window, 'load', initMap);
+        }
+
+        // This can be used to reset the map as well
+        function setMapOnAll(map) {
+          for (var i = 0; i < markerStore.length; i++) {
+            markerStore[i].setMap(map);
+          }
+        }
+
+        // Add a marker
+        function addMarker(map_coords, label, from_users) {
+          var lat;
+          var lon;
+
+          if (from_users) {
+            lat = map_coords.lat;
+            lon = map_coords.lon;
+          } else {
+            lat = map_coords.data.lat;
+            lon = map_coords.data.lon;
+          }
+
+          var latLong = new google.maps.LatLng(lat, lon);
+          var marker = new google.maps.Marker({
+              position: latLong,
+              label: label
+          });
+          marker.setMap(map);
+          map.setZoom(15);
+
+          if (!from_users) {
+            map.setCenter(marker.getPosition());
+          }
+
+          markerStore.push(marker);
+        }
+
+        // Updates map using all coordinates in the user dictionary.
+        function initMapWithCoords() {
+          // First reset map
+          setMapOnAll(null);
+
+          var marker;
+
+          // Call addMarker for each user in users
+          // Create a marker for each user in users
+          for (var user in users) {
+            console.log(user);
+            console.log(users[user]["lat"] + " " + users[user]["lon"]);
+
+            marker = new google.maps.Marker({
+              position: new google.maps.LatLng(users[user]["lat"], users[user]["lon"]),
+              map: map,
+              label: users[user]["uid"]
+            });
+            markerStore.push(marker);
+            console.log("Called");
+          }
+        }
+
+        namespace = '/test'; // change to an empty string to use the global namespace
+
+        // the socket.io documentation recommends sending an explicit package upon connection
+        // this is specially important when using the global namespace
+        var socket = io.connect('http://' + document.domain + ':' + location.port + namespace);
+
+        $(document).ready(function(){
+
+            // event handler for server sent data
+            // the data is displayed in the "Received" section of the page
+            socket.on('my response', function(msg) {
+                $('#log').append('<br>Received #' + msg.count + ': ' + msg.data);
+            });
+
+            // event handler for server sent data for newly updated/added location.
+            socket.on("map update", function(coords) {
+                // add the uid to session if not already done so
+                socket.emit("add uid and coords", coords);
+
+                // add the user and coords to local dictionary
+                users[coords.data.uid] = {"uid": coords.data.uid, "lat": coords.data.lat, "lon": coords.data.lon};
+
+                console.log(users);
+
+                initMapWithCoords();
+
+                $("#log").append("<br>Received lat/lon/uid: " + coords.data.lat + ", " + coords.data.lon + ", " + coords.data.uid);
+            });
+
+            // event handler for new connections
+            socket.on('connect', function() {
+                socket.emit('my event', {data: 'I\'m connected!'});
+            });
+
+
+            window.setInterval(function() {
+              printLocation();
+            }, 5000);
+        });
+
+        function printLocation() {
+          if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(showPosition);
+          }
+        };
+
+        function showPosition(position) {
+          // For testing - vary the marker position with each call.
+
+          var random_lat = Math.random()/100;
+          var random_lon = Math.random()/100;
+
+          // add your location to the map
+          coords = {
+            "data": {
+              "lat": position.coords.latitude + random_lat,
+              "lon": position.coords.longitude + random_lon
+            }
+          }
+
+          /* Without Random
+          coords = {
+            "data": {
+              "lat": position.coords.latitude,
+              "lon": position.coords.longitude
+            }
+          }
+          */
+
+          // resetMap();
+          setMapOnAll(null);
+          addMarker(coords, rand_id, false);
+
+          // Broadcast your location
+          socket.emit("map update", {data: {"uid": rand_id, "lat": position.coords.latitude + random_lat, "lon": position.coords.longitude + random_lon } });
+        };
+    </script>
+</head>
+<body>
+    <div id="map-canvas" style="position:relative;"></div>
+    <h2>Receive:</h2>
+    <div id="log"></div>
+</body>
+</html>
