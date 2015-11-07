@@ -1,0 +1,35 @@
+<html>
+    <body>
+        <nav>
+            <a href="#"><img class="nav-img" src="img/call.png"></a>
+            <a href="#"><img class="nav-img" src="img/go-to-map.png"></a>
+            <a href="#"><img class="nav-img" src="img/book-taxi-active.png"></a>
+        </nav>
+        <script type="text/javascript" src="jquery-1.11.2.min.js"></script>
+        <link href="css/main.css" rel="stylesheet">
+        <script>window.jQuery </script>
+
+        <iframe id="map-id" width="600" height="450" frameborder="0" style="border:0"
+                src="https://www.google.com/maps/embed/v1/directions?origin=ORIGINADDRESSGOESHERE&destination=DESTINATIONADDRESSGOESHERE&waypoints=WAYPOINT1|WAYPOINT2&key=AIzaSyB2INeLjmXDX54ePAm__6mwOU96R2UsUvw" allowfullscreen></iframe>
+
+        <iframe width="480" height="800" frameborder="0" style="border:0"
+                src="https://www.google.com/maps/embed/v1/directions?origin=Yale-NUS College,Singapore&destination=Anglo-Chinese School, Singapore&waypoints=Singapore Flyer, Singapore&key=AIzaSyB2INeLjmXDX54ePAm__6mwOU96R2UsUvw" allowfullscreen></iframe>
+
+<script type="text/javascript">
+    $(function() {
+        var originAddress;
+        var destinationAddress;
+
+        $("#map-id").text(function () {
+            return $(this).text()
+                .replace("ORIGINADDRESSGOESHERE", originAddress)
+                .replace("DESTINATIONADDRESSGOESHERE", destinationAddress)
+                .replace("WAYPOINT1|WAYPOINT2", something)
+                .replace("|&key=", "&key=");
+        });
+    });
+
+</script>
+
+</body></html>
+

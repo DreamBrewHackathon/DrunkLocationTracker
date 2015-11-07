@@ -1,19 +1,24 @@
 <html>
-	<head>
-		<title>Details</title>
-	</head>
-	<body>
-		<h1>Input Details</h1>
+    <head>
+        <title>Details</title>
+        <link href="static/css/main.css" rel="stylesheet">
+        <link href='https://fonts.googleapis.com/css?family=Montserrat' rel='stylesheet' type='text/css'>
 
-		<form method="post" action="{{url_for('connect')}}">
-			<!--<input><button>Add</button>-->
-			Name:    <input type="text" name="name"><br>
-			Phone:   <input type="text" name="number"><br>
-			Address: <input type="text" name="address"><br>
-			<button>Add</button>
-  		<br>
-		</form>
+    </head>
+    <body>
+        <div class="container">
+            <h1 id="form-header">Input Details</h1>
 
-		<script src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
-	</body>
+            <form id="person-form" method="post" action="{{url_for('connect')}}">
+                <!--<input><button>Add</button>-->
+                Name:    <input class="form" type="text" name="name"><br>
+                Phone:   <input class="form" type="text" name="number"><br>
+                Address: <input class="form" type="text" name="address"><br>
+                <button id="splash-button">Join Group</button>
+                <br>
+            </form>
+
+        </div>
+        <script src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
+    </body>
 </html>

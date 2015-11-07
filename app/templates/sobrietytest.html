@@ -1,0 +1,176 @@
+<html>
+<body>
+<nav>
+    <a href="#"><img class="nav-img" src="img/sobriety-test-active.png"></a>
+    <a href="#"><img class="nav-img" src="img/go-to-map.png"></a>
+    <a href="#"><img class="nav-img" src="img/book-taxi.png"></a>
+</nav>
+<script type="text/javascript" src="jquery-1.11.2.min.js"></script>
+<link href="css/main.css" rel="stylesheet">
+<link rel="import" href="https://www.polymer-project.org/0.5/components/paper-ripple/paper-ripple.html">
+<link rel="import" href="http://www.polymer-project.org/components/core-icons/core-icons.html">
+<link href='https://fonts.googleapis.com/css?family=Montserrat' rel='stylesheet' type='text/css'>
+<script>window.jQuery </script>
+
+
+<div class="container">
+    <h1 class="bg">Accelerometer Stuffs</h1>
+
+    <p><div class="bg" id="textDiv"></div></p>
+    <p><div id="resultDiv"></div></p>
+
+
+    <div class="fab blue">
+        <button class="test" id="calculate">START TEST</button>
+        <!--    <paper-ripple class="circle recenteringTouch" fit></paper-ripple>-->
+    </div>
+
+    <p><div id="passDiv">Ooh what does this button do?</div></p>
+<button id="splash-button" class="bg"><a href="drivehome.html"></a>BOOK MY RIDE</button>
+</div>
+<!--<a href=# id="calculate">Start Testing</a>-->
+
+<script type="text/javascript">
+
+var x = 0, y = 0,
+    vx = 0, vy = 0,
+    ax = 0, ay = 0,gx = 0, gy = 0, gz = 0;
+
+var div = document.getElementById("textDiv");
+div.textContent = "testing";
+var div2 = document.getElementById("resultDiv");
+var div3 = document.getElementById("passDiv");
+var text = div.textContent;
+
+if (window.DeviceMotionEvent) {
+  window.addEventListener('devicemotion', deviceMotionHandler, false);
+  window.ondevicemotion = deviceMotionHandler;
+}
+/*
+if (window.DeviceOrientationEvent) {
+  window.addEventListener('deviceorientation', function(eventData) {
+    // gamma is the left-to-right tilt in degrees, where right is positive
+    gx = eventData.gamma;
+
+    // beta is the front-to-back tilt in degrees, where front is positive
+    gy = eventData.beta;
+
+    // alpha is the compass direction the device is facing in degrees
+    gz = eventData.alpha;
+
+    // call our orientation event handler
+  }, false);
+}
+
+window.setInterval( function() {
+        $.getJSON('//e04b1656.ngrok.io/_processA', {
+                ggx: gx,
+                ggy: gy,
+                ggz: gz
+              }, function(data) {
+        	//div.textContent = data.result;
+        	//var text = div.textContent;
+        	return false;
+      	});
+    }, 2000);*/
+
+var testing = false;
+var bA = 0, bG=0, bgx = 0, bgy = 0, bgz = 0, AvA=0, AvG=0;
+var marginA = 0.3;
+var steps = 0;
+var curseconds = 0, waitseconds = 1;
+
+function deviceMotionHandler(eventData) {
+  // Grab the acceleration from the results
+  var acceleration = eventData.acceleration;
+
+  //info = xyz.replace("X", acceleration.x);
+  //info = info.replace("Y", acceleration.y);
+  //info = info.replace("Z", acceleration.z);
+  //document.getElementById("moAccel").innerHTML = info;
+
+  // Grab the acceleration including gravity from the results
+  acceleration = eventData.accelerationIncludingGravity;
+  //info = xyz.replace("X", acceleration.x);
+  //info = info.replace("Y", acceleration.y);
+  //info = info.replace("Z", acceleration.z);
+  //document.getElementById("moAccelGrav").innerHTML = info;
+
+  // Grab the rotation rate from the results
+  var rotation = eventData.rotationRate;
+  gx = rotation.alpha;
+  gy = rotation.beta;
+  gz = rotation.gamma;
+  //info = xyz.replace("X", rotation.alpha);
+  //info = info.replace("Y", rotation.beta);
+  //info = info.replace("Z", rotation.gamma);
+  //document.getElementById("moRotation").innerHTML = info;
+  AvA = ((Math.abs(acceleration.x)+Math.abs(acceleration.y)+Math.abs(acceleration.z))/3);
+  AvG = ((Math.abs(gx)+Math.abs(gy)+Math.abs(gz))/3);
+  div.textContent = "AvG: "+AvG;
+  var text = div.textContent;
+  var cs = new Date().getTime() / 1000;
+
+    if (AvG >= 0.9 && testing == true) {
+  		div3.textContent = "Perhaps a cab, sir?";
+        $('#passDiv').attr("id","passDiv-fail");
+  		var text3 = div3.textContent;
+  		testing = false;
+  	}
+
+  if(testing == true) {
+  	if(AvA > (bA+marginA) && cs > (curseconds+waitseconds)) {
+  		curseconds = cs;
+  		steps = steps+1;
+  		if (steps>=10) {
+  			div3.textContent = "Splendid! You've passed";
+            $('#passDiv').attr("id","passDiv-pass");
+            $('#splash-button').attr("class","rm");
+
+  			var text3 = div3.textContent;
+  			testing = false;
+  		}
+  	}
+//    div2.textContent = "Testing. Steps: "+steps+" , bA: "+bA;
+  	div2.textContent = "Steps";
+    $('#calculate').attr("class","test-testing").html(steps);
+
+  	var text2 = div2.textContent;
+  }
+  else
+  {
+  	div2.textContent = "PRESS TO START SOBRIETY TEST";
+  	var text2 = div2.textContent;
+  }
+  // // Grab the refresh interval from the results
+  //info = eventData.interval;
+  //document.getElementById("moInterval").innerHTML = info;
+}
+
+$(function() {
+    $('#calculate').bind('click', function() {
+
+        $('#calculate').attr("class","test-big").html("3");
+        $('#calculate')
+            .delay(1000)
+            .queue(function (next) {
+            $(this).html("2");
+            next();
+        });
+        $('#calculate')
+            .delay(1000)
+            .queue(function (next) {
+            $(this).html("1");
+            next();
+        });
+        testing = true;
+        bA = AvA;
+        bG = AvG;
+        curseconds = new Date().getTime() / 1000;
+        return false;
+    });
+});
+
+</script>
+
+</body></html>

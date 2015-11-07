@@ -5,18 +5,68 @@
     <script type="text/javascript" src="//code.jquery.com/jquery-1.4.2.min.js"></script>
     <script src="https://maps.googleapis.com/maps/api/js?v=3.exp"></script>
     <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/socket.io/1.3.5/socket.io.min.js"></script>
+    <link href="/static/css/main.css" rel="stylesheet">
+    <link href='https://fonts.googleapis.com/css?family=Montserrat' rel='stylesheet' type='text/css'>
     <style>
-      #map-canvas {
-        height: 500px;
-        width: 50%;
-        padding: 0.5%;
-        margin: auto;
-        position: absolute;
-        top: 2%;
-        left: 0;
-        bottom: 0;
-        right: 0;
-      }
+
+        body {
+            background-color: #333333;
+            font-family: 'Montserrat', sans-serif;
+            color: fff;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+            -webkit-tap-highlight-color: rgba(0,0,0,0);
+            -webkit-touch-callout: none;
+        }
+
+        #map-canvas {
+            height: 800px;
+            width: 100%;
+            padding: 0.5%;
+            margin: auto;
+            position: relative;
+            top: 2%;
+            left: 0;
+            bottom: 0;
+            right: 0;
+        }
+
+
+        nav {
+            position: absolute;
+            z-index: 1000;
+        }
+
+        nav {
+            margin-top: 25px;
+            text-align: center;
+        }
+        .nav-img {
+            max-width: 15%;
+            padding-left: 7%;
+            padding-right: 7%;
+        }
+
+        h2, #log {
+            color: #fff;
+            font-size: 20px;
+        }
+
+        #log a {
+            color: #fff;
+            text-decoration: none;
+            font-size: 20px;
+
+            padding-top: 20px;
+            padding-bottom: 20px;
+        }
+
+        .contact {
+            background-color: #212121;
+            padding: 10px;
+        }
     </style>
     <script type="text/javascript" charset="utf-8">
         // GLOBAL VARS //
@@ -165,7 +215,7 @@
 
                 // add the user and coords to local dictionary
                 if (!users.hasOwnProperty(coords.data.uid)) {
-                  $("#log").append("<br>Name: " + coords.data.name + ", Number: " + "<a href='tel:" + coords.data.number + "'>" + coords.data.number + "</a>" + ", Address: " + coords.data.address);
+                    $("#log").append("<div class='contact'><a href='tel:" + coords.data.number + "'> Name: " + coords.data.name + "</a></div>");
                 }
 
                 users[coords.data.uid] = {"name": coords.data.name, "number": coords.data.number, "address": coords.data.address, "uid": coords.data.uid,
@@ -228,6 +278,11 @@
     </script>
 </head>
 <body>
+    <nav>
+        <a href="#"><img class="nav-img" src="/static/img/call.png"></a>
+        <a href="#"><img class="nav-img" src="/static/img/go-to-map-active.png"></a>
+        <a href="/templates/sobrietytest.html"><img class="nav-img" src="/static/img/book-taxi.png"></a>
+    </nav>
     <div id="map-canvas" style="position:relative;"></div>
     <h2>Connected people</h2>
     <div id="log"></div>
