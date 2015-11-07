@@ -41,6 +41,9 @@
         // Get random character
         var rand_id = ids[Math.floor(Math.random() * ids.length)];
 
+        // Counter that keeps track of number of times zoomed
+        var zoom_counter = 0;
+
         // Initialize map
         function initMap() {
           var mapOptions = {
@@ -92,7 +95,11 @@
               label: label
           });
           marker.setMap(map);
-          map.setZoom(15);
+
+          if (zoom_counter === 0){
+            map.setZoom(15);
+            zoom_counter++;
+          }
 
           if (!from_users) {
             map.setCenter(marker.getPosition());
@@ -120,6 +127,16 @@
               label: users[user]["uid"]
             });
             markerStore.push(marker);
+
+            if (users[user]["uid"] === rand_id) {
+              map.setCenter(marker.getPosition());
+            }
+
+            if (zoom_counter === 0){
+              map.setZoom(15);
+              zoom_counter++;
+            }
+
             console.log("Called");
           }
         }
@@ -150,7 +167,7 @@
 
                 initMapWithCoords();
 
-                $("#log").append("<br>Received lat/lon/uid: " + coords.data.lat + ", " + coords.data.lon + ", " + coords.data.uid);
+                // $("#log").append("<br>Received lat/lon/uid: " + coords.data.lat + ", " + coords.data.lon + ", " + coords.data.uid);
             });
 
             // event handler for new connections
@@ -177,34 +194,28 @@
           var random_lon = Math.random()/100;
 
           // add your location to the map
+          /*
           coords = {
             "data": {
               "lat": position.coords.latitude + random_lat,
               "lon": position.coords.longitude + random_lon
             }
           }
+          */
 
-          /* Without Random
           coords = {
             "data": {
               "lat": position.coords.latitude,
               "lon": position.coords.longitude
             }
           }
-          */
-
-          // resetMap();
-          setMapOnAll(null);
-          addMarker(coords, rand_id, false);
 
           // Broadcast your location
-          socket.emit("map update", {data: {"uid": rand_id, "lat": position.coords.latitude + random_lat, "lon": position.coords.longitude + random_lon } });
+          socket.emit("map update", {data: {"uid": rand_id, "lat": position.coords.latitude, "lon": position.coords.longitude } });
         };
     </script>
 </head>
 <body>
     <div id="map-canvas" style="position:relative;"></div>
-    <h2>Receive:</h2>
-    <div id="log"></div>
 </body>
 </html>
