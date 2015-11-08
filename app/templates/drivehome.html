@@ -1,19 +1,276 @@
 <html>
+    <head>
+    <style>
+
+    body {
+        background-color: #333333;
+        font-family: 'Montserrat', sans-serif;
+        color: fff;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+        -webkit-tap-highlight-color: rgba(0,0,0,0);
+        -webkit-touch-callout: none;
+    }
+
+    .container {
+        display: inline-block;
+        width: 100%;
+        height: 100%;
+        text-align: center;
+    }
+    #form-header {
+        text-align: center;
+        font-size: 50px;
+        padding-top: 70px;
+    }
+
+    #person-form {
+        font-size: 25px;
+        text-align: center;
+    }
+
+    form#person-form > input.form {
+        height: 70px;
+        margin: 10px;
+        width: 80%;
+        font-size: 25px;
+        text-align: center;
+
+    }
+
+    #map-canvas {
+        height: 800px;
+        width: 100%;
+        padding: 0.5%;
+        margin: auto;
+        position: relative;
+        top: 2%;
+        left: 0;
+        bottom: 0;
+        right: 0;
+    }
+
+    #splash-button a {
+        text-decoration: none;
+        color: #f00;
+    }
+
+    a:  {
+        text-decoration: none;
+        color: #fff;
+    }
+
+    nav {
+        position: absolute;
+        z-index: 1000;
+    }
+
+
+    body {
+        background-color: #333333;
+        font-family: 'Montserrat', sans-serif;
+        color: fff;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+        -webkit-tap-highlight-color: rgba(0,0,0,0);
+        -webkit-touch-callout: none;
+    }
+
+    .container {
+        text-align: center;
+        align-content: center;
+    }
+
+    /* Button */
+    .button {
+        font-family: 'Montserrat', sans-serif;
+        text-align: center;
+        position: relative;
+        width: 120px;
+        height: 32px;
+        line-height: 32px;
+        border-radius: 2px;
+        font-size: 0.9em;
+        background-color: #fff;
+        color: #646464;
+    }
+
+    .button.blue {
+        background-color: #4285f4;
+        color: #fff;
+    }
+
+    /* FAB */
+    .fab {
+        text-align: center;
+        position: relative;
+        align-content: center;
+        width: 250px;
+        height: 250px;
+        border-radius: 50%;
+        color: #fff;
+        overflow: hidden;
+        transition: box-shadow 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+        transition-delay: 0.2s;
+        box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.26);
+    }
+
+    .fab.blue {
+        background-color: #4285f4;
+        position: relative;
+        text-align: center;
+        display: inline-block;
+    }
+
+
+    .fab:active {
+        box-shadow: 0 8px 17px 0 rgba(0, 0, 0, 0.2);
+        transition-delay: 0s;
+    }
+
+
+    .bg {
+        display: none;
+    }
+
+    .test {
+        height: 250px;
+        width: 250px;
+        border-radius: 125px;
+        background-color: #4285f4;
+        color: #fff;
+        border: none;
+        font-size: 45px;
+        font-family: 'Montserrat', sans-serif;
+    }
+
+    .test-big {
+        height: 250px;
+        width: 250px;
+        border-radius: 125px;
+        color: white;
+        background-color: darkgreen;
+        border: none;
+        font-size: 125px;
+        font-family: 'Montserrat', sans-serif;
+    }
+
+    .test-testing {
+        height: 250px;
+        width: 250px;
+        border-radius: 125px;
+        color: white;
+        background-color: darkred;
+        border: none;
+        font-size: 125px;
+    }
+
+    .test:focus{
+        outline: 0;
+    }
+
+    .test-big:focus{
+        outline: 0;
+    }
+
+    #resultDiv {
+        font-size: 40px;
+        height: 50px;
+        margin-top: 20%;
+        padding-bottom: 50px;
+    }
+
+    #passDiv {
+        padding-top: 30px;
+        font-size: 40px;
+    }
+
+    #passDiv-fail {
+        color: red;
+    }
+
+    #passDiv-pass {
+        color: darkblue;
+    }
+
+    nav {
+        position: absolute;
+        z-index: 1000;
+    }
+
+    nav {
+        margin-top: 25px;
+        text-align: center;
+    }
+    .nav-img {
+        display: block;
+        float: right;
+        max-width: 18%;
+        padding-left: 7%;
+        padding-right: 7%;
+    }
+
+    #splash-content {
+        margin-bottom: 60%;
+    }
+
+    #splash-content2 {
+        margin-bottom: 15%;
+    }
+
+    .splash-img {
+        width: 500px;
+    }
+
+    #splash-button {
+        position: relative;
+        display: inline-block;
+        width: 80%;
+        height: 200px;
+        margin-top: 70px;
+        top: 70%;
+        background-color: #4285f4;
+        color: #fff;
+        border: none;
+        font-size: 70px;
+        font-family: 'Montserrat', sans-serif;
+    }
+
+    .rm {
+        display: inline-block;
+    }
+
+    #splash-button a {
+        text-decoration: none;
+        color: #fff;
+    }
+
+    a:  {
+        text-decoration: none;
+        color: #fff;
+    }
+    </style>
+
+    </head>
     <body>
-        <nav>
-            <a href="#"><img class="nav-img" src="img/call.png"></a>
-            <a href="#"><img class="nav-img" src="img/go-to-map.png"></a>
-            <a href="#"><img class="nav-img" src="img/book-taxi-active.png"></a>
+        <nav style="float: right; display: block;">
+            <a href="#"><img class="nav-img" src="static/img/call.png"></a>
+            <a href="#"><img class="nav-img" src="static/img/go-to-map.png"></a>
+            <a href="#"><img class="nav-img" src="static/img/book-taxi-active.png"></a>
         </nav>
-        <script type="text/javascript" src="jquery-1.11.2.min.js"></script>
-        <link href="css/main.css" rel="stylesheet">
+        <script type="text/javascript" src="static/js/jquery-1.11.2.min.js"></script>
         <script>window.jQuery </script>
 
+        <!--
         <iframe id="map-id" width="600" height="450" frameborder="0" style="border:0"
-                src="https://www.google.com/maps/embed/v1/directions?origin=ORIGINADDRESSGOESHERE&destination=DESTINATIONADDRESSGOESHERE&waypoints=WAYPOINT1|WAYPOINT2&key=AIzaSyB2INeLjmXDX54ePAm__6mwOU96R2UsUvw" allowfullscreen></iframe>
+                src="https://www.google.com/maps/embed/v1/directions?origin=ORIGINADDRESSGOESHERE&destination=DESTINATIONADDRESSGOESHERE&waypoints=WAYPOINT1|WAYPOINT2&key=AIzaSyB2INeLjmXDX54ePAm__6mwOU96R2UsUvw" allowfullscreen></iframe> -->
 
-        <iframe width="480" height="800" frameborder="0" style="border:0"
-                src="https://www.google.com/maps/embed/v1/directions?origin=Yale-NUS College,Singapore&destination=Anglo-Chinese School, Singapore&waypoints=Singapore Flyer, Singapore&key=AIzaSyB2INeLjmXDX54ePAm__6mwOU96R2UsUvw" allowfullscreen></iframe>
+        <iframe width="100%" height="100%" frameborder="0" style="border:0"
+                src="https://www.google.com/maps/embed/v1/directions?origin=Bugis, Singapore&destination=Yale-NUS College, Singapore&waypoints=Holland Village, Singapore&key=AIzaSyB2INeLjmXDX54ePAm__6mwOU96R2UsUvw" allowfullscreen></iframe>
 
 <script type="text/javascript">
     $(function() {
@@ -32,4 +289,3 @@
 </script>
 
 </body></html>
-

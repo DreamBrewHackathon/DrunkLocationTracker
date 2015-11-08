@@ -10,8 +10,12 @@ import uuid
 def background_thread():
     count = 0
 
-@app.route("/", methods=["GET", "POST"])
-def index():
+@app.route("/")
+def splash():
+    return render_template("splash.html")
+
+@app.route("/create_room", methods=["GET", "POST"])
+def create_room():
     namespace = str(uuid.uuid4())
     if request.method=="POST":
         return redirect(url_for('connect'))
@@ -26,6 +30,14 @@ def connect():
         return redirect(url_for('map', name=name, number=number, address=address))
     else:
         return render_template("formdetails.html")
+
+@app.route("/sobrietytest")
+def sobrietytest():
+    return render_template("sobrietytest.html")
+
+@app.route("/drive_home")
+def drive_home():
+    return render_template("drivehome.html")
 
 @app.route('/map/<name>/<number>/<address>')
 def map(name, number, address):

@@ -1,15 +1,272 @@
+<!DOCTYPE HTML>
 <html>
+<head>
+<script type="text/javascript" src="static/js/jquery-1.11.2.min.js"></script>
+<link rel="import" href="https://www.polymer-project.org/0.5/components/paper-ripple/paper-ripple.html">
+<link rel="import" href="http://www.polymer-project.org/0.5/components/core-icons/core-icons.html">
+<link href='https://fonts.googleapis.com/css?family=Montserrat' rel='stylesheet' type='text/css'>
+<style>
+
+body {
+    background-color: #333333;
+    font-family: 'Montserrat', sans-serif;
+    color: fff;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    -webkit-tap-highlight-color: rgba(0,0,0,0);
+    -webkit-touch-callout: none;
+}
+
+.container {
+    display: inline-block;
+    width: 100%;
+    height: 100%;
+    text-align: center;
+}
+#form-header {
+    text-align: center;
+    font-size: 50px;
+    padding-top: 70px;
+}
+
+#person-form {
+    font-size: 25px;
+    text-align: center;
+}
+
+form#person-form > input.form {
+    height: 70px;
+    margin: 10px;
+    width: 80%;
+    font-size: 25px;
+    text-align: center;
+
+}
+
+#map-canvas {
+    height: 800px;
+    width: 100%;
+    padding: 0.5%;
+    margin: auto;
+    position: relative;
+    top: 2%;
+    left: 0;
+    bottom: 0;
+    right: 0;
+}
+
+#splash-button a {
+    text-decoration: none;
+    color: #f00;
+}
+
+a:  {
+    text-decoration: none;
+    color: #fff;
+}
+
+nav {
+    position: absolute;
+    z-index: 1000;
+}
+
+
+body {
+    background-color: #333333;
+    font-family: 'Montserrat', sans-serif;
+    color: fff;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    -webkit-tap-highlight-color: rgba(0,0,0,0);
+    -webkit-touch-callout: none;
+}
+
+.container {
+    text-align: center;
+    align-content: center;
+}
+
+/* Button */
+.button {
+    font-family: 'Montserrat', sans-serif;
+    text-align: center;
+    position: relative;
+    width: 120px;
+    height: 32px;
+    line-height: 32px;
+    border-radius: 2px;
+    font-size: 0.9em;
+    background-color: #fff;
+    color: #646464;
+}
+
+.button.blue {
+    background-color: #4285f4;
+    color: #fff;
+}
+
+/* FAB */
+.fab {
+    text-align: center;
+    position: relative;
+    align-content: center;
+    width: 250px;
+    height: 250px;
+    border-radius: 50%;
+    color: #fff;
+    overflow: hidden;
+    transition: box-shadow 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    transition-delay: 0.2s;
+    box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.26);
+}
+
+.fab.blue {
+    background-color: #4285f4;
+    position: relative;
+    text-align: center;
+    display: inline-block;
+}
+
+
+.fab:active {
+    box-shadow: 0 8px 17px 0 rgba(0, 0, 0, 0.2);
+    transition-delay: 0s;
+}
+
+
+.bg {
+    display: none;
+}
+
+.test {
+    height: 250px;
+    width: 250px;
+    border-radius: 125px;
+    background-color: #4285f4;
+    color: #fff;
+    border: none;
+    font-size: 45px;
+    font-family: 'Montserrat', sans-serif;
+}
+
+.test-big {
+    height: 350px;
+    width: 350px;
+    border-radius: 125px;
+    color: white;
+    background-color: darkgreen;
+    border: none;
+    font-size: 125px;
+    font-family: 'Montserrat', sans-serif;
+}
+
+.test-testing {
+    height: 250px;
+    width: 250px;
+    border-radius: 125px;
+    color: white;
+    background-color: darkred;
+    border: none;
+    font-size: 125px;
+}
+
+.test:focus{
+    outline: 0;
+}
+
+.test-big:focus{
+    outline: 0;
+}
+
+#resultDiv {
+    font-size: 40px;
+    height: 50px;
+    margin-top: 20%;
+    padding-bottom: 50px;
+    color: white;
+}
+
+#passDiv {
+    padding-top: 30px;
+    font-size: 40px;
+}
+
+#passDiv-fail {
+    font-size: 60px;
+    color: red;
+}
+
+#passDiv-pass {
+    font-size: 40px;
+    color: lightgreen;
+}
+
+nav {
+    position: absolute;
+    z-index: 1000;
+}
+
+nav {
+    margin-top: 25px;
+    text-align: center;
+}
+.nav-img {
+    max-width: 15%;
+    padding-left: 7%;
+    padding-right: 7%;
+}
+
+#splash-content {
+    margin-bottom: 60%;
+}
+
+#splash-content2 {
+    margin-bottom: 15%;
+}
+
+.splash-img {
+    width: 500px;
+}
+
+#splash-button {
+    position: relative;
+    display: none;
+    width: 80%;
+    height: 200px;
+    margin-top: 70px;
+    top: 70%;
+    background-color: #4285f4;
+    color: #fff;
+    border: none;
+    font-size: 70px;
+    font-family: 'Montserrat', sans-serif;
+}
+
+.rm {
+    display: inline-block;
+}
+
+#splash-button a {
+    text-decoration: none;
+    color: #fff;
+}
+
+a:  {
+    text-decoration: none;
+    color: #fff;
+}
+</style>
+</head>
 <body>
 <nav>
-    <a href="#"><img class="nav-img" src="img/sobriety-test-active.png"></a>
-    <a href="#"><img class="nav-img" src="img/go-to-map.png"></a>
-    <a href="#"><img class="nav-img" src="img/book-taxi.png"></a>
+    <a href="#"><img class="nav-img" src="static/img/sobriety-test-active.png"></a>
+    <a href="#"><img class="nav-img" src="static/img/go-to-map.png"></a>
+    <a href="{{url_for('drive_home')}}"><img class="nav-img" src="static/img/book-taxi.png"></a>
 </nav>
-<script type="text/javascript" src="jquery-1.11.2.min.js"></script>
-<link href="css/main.css" rel="stylesheet">
-<link rel="import" href="https://www.polymer-project.org/0.5/components/paper-ripple/paper-ripple.html">
-<link rel="import" href="http://www.polymer-project.org/components/core-icons/core-icons.html">
-<link href='https://fonts.googleapis.com/css?family=Montserrat' rel='stylesheet' type='text/css'>
 <script>window.jQuery </script>
 
 
@@ -26,7 +283,7 @@
     </div>
 
     <p><div id="passDiv">Ooh what does this button do?</div></p>
-<button id="splash-button" class="bg"><a href="drivehome.html"></a>BOOK MY RIDE</button>
+<button id="splash-button" class="bg"><a href="url_for('drive_home')"></a>BOOK MY RIDE</button>
 </div>
 <!--<a href=# id="calculate">Start Testing</a>-->
 
@@ -114,6 +371,7 @@ function deviceMotionHandler(eventData) {
     if (AvG >= 0.9 && testing == true) {
   		div3.textContent = "Perhaps a cab, sir?";
         $('#passDiv').attr("id","passDiv-fail");
+        document.getElementById("splash-button").style.display = "inline-block";
   		var text3 = div3.textContent;
   		testing = false;
   	}
@@ -125,6 +383,7 @@ function deviceMotionHandler(eventData) {
   		if (steps>=10) {
   			div3.textContent = "Splendid! You've passed";
             $('#passDiv').attr("id","passDiv-pass");
+            document.getElementById("passDiv-pass").style.color = "LightGreen";
             $('#splash-button').attr("class","rm");
 
   			var text3 = div3.textContent;

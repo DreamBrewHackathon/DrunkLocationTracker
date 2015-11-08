@@ -64,8 +64,11 @@
         }
 
         .contact {
+            height: 100px;
+            text-align: center;
+            font-size: 80px;
             background-color: #212121;
-            padding: 10px;
+            padding: 5px;
         }
     </style>
     <script type="text/javascript" charset="utf-8">
@@ -215,7 +218,7 @@
 
                 // add the user and coords to local dictionary
                 if (!users.hasOwnProperty(coords.data.uid)) {
-                    $("#log").append("<div class='contact'><a href='tel:" + coords.data.number + "'> Name: " + coords.data.name + "</a></div>");
+                    $("#log").append("<a style='font-size: 0.8em; margin:3%;' href='tel:" + coords.data.number + "'><div class='contact'>" + coords.data.name + "</div></a>");
                 }
 
                 users[coords.data.uid] = {"name": coords.data.name, "number": coords.data.number, "address": coords.data.address, "uid": coords.data.uid,
@@ -281,10 +284,10 @@
     <nav>
         <a href="#"><img class="nav-img" src="/static/img/call.png"></a>
         <a href="#"><img class="nav-img" src="/static/img/go-to-map-active.png"></a>
-        <a href="/templates/sobrietytest.html"><img class="nav-img" src="/static/img/book-taxi.png"></a>
+        <a href="{{url_for('sobrietytest')}}"><img class="nav-img" src="/static/img/book-taxi.png"></a>
     </nav>
     <div id="map-canvas" style="position:relative;"></div>
-    <h2>Connected people</h2>
+    <h2 class="text-center" style="font-size: 50px; margin: 5%;">Connected people</h2>
     <div id="log"></div>
 </body>
 </html>
