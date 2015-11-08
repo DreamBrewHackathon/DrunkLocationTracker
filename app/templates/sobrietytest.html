@@ -191,8 +191,9 @@ body {
 }
 
 #passDiv {
-    padding-top: 30px;
+    padding-top: 40px;
     font-size: 40px;
+    color: white;
 }
 
 #passDiv-fail {
@@ -282,7 +283,7 @@ a:  {
         <!--    <paper-ripple class="circle recenteringTouch" fit></paper-ripple>-->
     </div>
 
-    <p><div id="passDiv">Ooh what does this button do?</div></p>
+    <p><div id="passDiv">Walk slowly with the phone parallel to the ground</div></p>
     <a target="_blank" href="https://m.uber.com/"><button id="splash-button" class="bg">BOOK MY RIDE</button></a>
 </div>
 <!--<a href=# id="calculate">Start Testing</a>-->
@@ -388,6 +389,9 @@ function deviceMotionHandler(eventData) {
 
   			var text3 = div3.textContent;
   			testing = false;
+
+        // redirect
+        window.location.href="/drive_home"
   		}
   	}
 //    div2.textContent = "Testing. Steps: "+steps+" , bA: "+bA;

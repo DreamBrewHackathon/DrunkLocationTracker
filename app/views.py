@@ -7,15 +7,83 @@ from flask.ext.socketio import emit, join_room, leave_room, \
 import json
 import uuid
 
+import boto
+from boto.s3.key import Key
+import os
+
+from config import *
+
+# Boto setup
+acc_key = AWS_ACCESS_KEY
+acc_sec = AWS_SECRET_KEY
+bucket = "partyingsalesman"
+
+# Connect to s3
+c = boto.connect_s3(acc_key, acc_sec)
+b = c.get_bucket(bucket)
+bucket_key = Key(b)
+
+path = "app/static/json/names.json"
+map_coords = []
+
 def background_thread():
     count = 0
 
+def get_addresses_from_s3():
+    """ Get addresses from s3 """
+    bucket_key.key = "names.json"
+
+    map_coords = []
+    with open(path, "w+") as fp:
+        bucket_key.get_file(fp)
+        fp.seek(0)
+        map_coords = json.load(fp)
+        fp.close()
+
+    return map_coords
+
+def write_to_s3(coords):
+    """ Write coordinates to json in s3 """
+    bucket_key.key = "names.json"
+
+    map_coords = []
+    with open(path, "w+") as fp:
+        bucket_key.get_file(fp)
+        fp.seek(0)
+        map_coords = json.load(fp)
+        fp.close()
+
+    map_coords.append(coords)
+
+    # now write to s3
+    with open(path, "w+") as fp:
+        fp.write(json.dumps(map_coords))
+        fp.close()
+
+    # Upload
+    bucket_key.set_contents_from_filename(path)
+
+def clear_s3_json():
+    """ Clear the json in s3. Called when new session is created. """
+    bucket_key.key = "names.json"
+    empty = []
+
+    with open(path, "w+") as fp:
+        fp.write(json.dumps(empty))
+        fp.close()
+
+    # Upload
+    bucket_key.set_contents_from_filename(path)
+    print "Success"
+
 @app.route("/")
 def splash():
+    clear_s3_json()
     return render_template("splash.html")
 
 @app.route("/create_room", methods=["GET", "POST"])
 def create_room():
+    # First, clear json
     namespace = str(uuid.uuid4())
     if request.method=="POST":
         return redirect(url_for('connect'))
@@ -58,10 +126,12 @@ def map_update(coords):
     if "map_coords" in session:
         """ This either updates or adds a new user and his/her info. """
         session["map_coords"][uid] = coords
+        map_coords = session["map_coords"]
     else:
         """ Set up a new map_coords session (first step) """
         session["map_coords"] = {}
         session["map_coords"][uid] = coords
+        map_coords = session["map_coords"]
     emit("map update",
         {"data": session["map_coords"][uid]},
         broadcast=True)

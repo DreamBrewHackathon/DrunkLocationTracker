@@ -291,13 +291,36 @@
         color: #fff;
     }
 </style>
+<!--
+ <script>
+ function hideAddressBar()
+{
+  if(!window.location.hash)
+  {
+      if(document.height < window.outerHeight)
+      {
+          document.body.style.height = (window.outerHeight + 50) + 'px';
+      }
+
+      setTimeout( function(){ window.scrollTo(0, 1); }, 50 );
+  }
+}
+
+window.addEventListener("load", function(){ if(!window.pageYOffset){ hideAddressBar(); } } );
+window.addEventListener("orientationchange", hideAddressBar );
+</script> -->
 <script>
-$(document).ready(function(){
-   if(navigator.userAgent.match(/Android/i)){
-      window.scrollTo(0,1);
-   }
-});
- </script>
+window.scrollTo( 0, 1 );
+
+var scrollTop,
+    bodycheck = setInterval(function(){
+    if( document.body ){
+        clearInterval( bodycheck );
+        scrollTop = getScrollTop();
+        window.scrollTo( 0, scrollTop === 1 ? 0 : 1 );
+    }
+}, 15 );
+</script>
 </head>
 
 <body>
@@ -349,7 +372,7 @@ $(document).ready(function(){
                 <div class="carousel-caption">
                     <div id="splash-content2">
                         <img class="splash-img" src="static/img/taxi.png">
-                        <h2>Find your way home, or use uber</h2>
+                        <h2>Find your way home, or use UBER</h2>
                         <button id="splash-button"><a href="{{ url_for('create_room') }}" >GET STARTED</a></button>
                     </div>
                 </div>
